@@ -51,19 +51,19 @@ Procesa una imagen RGB de fondo de ojo y genera una imagen binaria con la vascul
    Se aísla el canal verde de la imagen RGB, que ofrece el mayor contraste natural entre los vasos sanguíneos y el fondo retiniano al presentar la menor absorción lumínica por los pigmentos de la retina.
 
 2. **CLAHE adaptativo**  
-   Se aplica ecualización adaptativa de histograma con limitación de contraste (`adapthisteq`). El parámetro `ClipLimit` se calcula dinámicamente a partir de la desviación estándar de cada imagen (`0.08 * std2(canal_verde)`), lo que evita amplificaciones inconsistentes entre estadios clínicos con distintas condiciones de captura.
+   Se aplica ecualización adaptativa de histograma con limitación de contraste (`adapthisteq`). El parámetro `ClipLimit` se calcula dinámicamente a partir de la desviación estándar de cada imagen, lo que evita amplificaciones inconsistentes entre estadios clínicos con distintas condiciones de captura.
 
 3. **Generación de máscara del campo visual**  
    Se binariza la imagen en escala de grises con umbral de intensidad 15, se selecciona la componente conexa de mayor área y se refina mediante relleno de huecos (`imfill`) y erosión morfológica con un disco de radio proporcional a la escala de la imagen. Esto restringe todos los cálculos al área retiniana efectiva, excluyendo el fondo negro.
 
 4. **Detección y neutralización de exudados**  
-   Se aplica un filtro tophat sobre la diferencia entre los canales rojo y verde para identificar exudados brillantes mediante un umbral estadístico (`media + 2.5 * desviación estándar`). Las regiones detectadas se neutralizan antes del filtrado de Frangi para evitar falsos positivos en la segmentación vascular.
+   Se aplica un filtro tophat sobre la diferencia entre los canales rojo y verde para identificar exudados brillantes mediante un umbral estadístico. Las regiones detectadas se neutralizan antes del filtrado de Frangi para evitar falsos positivos en la segmentación vascular.
 
-5. **Filtro de Frangi multiescala (Hessian-based)**  
-   Se implementa el filtro de Frangi (Frangi et al., 1998) calculando el tensor Hessiano normalizado a múltiples escalas gaussianas (`sigma_min` a `sigma_max`, proporcionales a la resolución de la imagen respecto a una referencia de 2,000 px). Para cada escala se evalúa la función de *vesselness* 2D:
+5. **Filtro de Frangi multiescala**  
+   Se implementa el filtro de Frangi calculando el tensor Hessiano normalizado a múltiples escalas gaussianas (`sigma_min` a `sigma_max`, proporcionales a la resolución de la imagen respecto a una referencia de 2,000 px). Para cada escala se evalúa la función de *vesselness* 2D:
 
    ```
-   V(σ) = exp(−R_B² / 2β²) · (1 − exp(−S² / 2c²)),   λ₂ < 0
+   $$V(\sigma) = \exp\left(-\frac{R_B^2}{2\beta^2}\right) \cdot \left(1 - \exp\left(-\frac{S^2}{2c^2}\right)\right), \quad \lambda_2 > 0$$
    ```
 
    donde `R_B = λ₁/λ₂` es la medida de blobness y `S = sqrt(λ₁² + λ₂²)` la magnitud del Hessiano. El mapa de vasos final es el máximo de `V(σ)` sobre todas las escalas. Este método detecta simultáneamente vasos de diferente calibre sin requerir orientaciones predefinidas, superando las limitaciones de detectores de bordes clásicos (como Canny) para vasos finos.

@@ -1,6 +1,6 @@
-# Análisis Fractal de la Vasculatura Retiniana para Clasificación de Retinopatía Diabética
+# Aplicación de Métodos de Dinámica No Lineal (Dimensión Fractal) para Clasificar Imágenes de Retinopatía Diabética
 
-**Proyecto Modular — Electrónica y Computación**  
+**Proyecto Modular — Ing. en Electrónica y Computación**  
 Centro Universitario de los Lagos, Universidad de Guadalajara  
 Autora: Ximena López Guerra | Asesor: Dr. Rider Jaimes Reátegui  
 Junio de 2026

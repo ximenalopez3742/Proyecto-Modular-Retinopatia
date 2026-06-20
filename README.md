@@ -9,28 +9,7 @@ Junio de 2026
 
 ## Descripción general
 
-Este repositorio contiene los algoritmos desarrollados en MATLAB para la caracterización cuantitativa de la arquitectura vascular retiniana mediante métodos de dinámica no lineal. A partir de imágenes de fondo de ojo, el pipeline extrae la vasculatura, calcula la **dimensión fractal (D_f)** mediante el método de Box-Counting y la **lacunaridad media (Λ̄)** mediante el método de deslizamiento de cajas. Ambas métricas permiten discriminar entre retinas sanas y los diferentes estadios de la retinopatía diabética (RDNP, RDP-E1, RDP-E2, RDP-E3).
-
----
-
-## Estructura del repositorio
-
-```
-/
-├── Vasos_Retina.m       # Preprocesamiento y segmentación vascular (Filtro de Frangi)
-├── Df_Retina.m          # Cálculo de la dimensión fractal (Box-Counting)
-├── Lacunaridad.m        # Cálculo de la lacunaridad media
-└── README.md
-```
-
----
-
-## Requisitos
-
-- **MATLAB** R2021a o superior
-- Toolboxes requeridos:
-  - Image Processing Toolbox
-  - Statistics and Machine Learning Toolbox (para `tinv` en `Df_Retina.m`)
+Este repositorio contiene los algoritmos desarrollados en MATLAB para la caracterización cuantitativa de la arquitectura vascular retiniana mediante métodos de dinámica no lineal. A partir de imágenes de fondo de ojo, el pipeline extrae la vasculatura, calcula la **dimensión fractal ($D_f$)** mediante el método de Box-Counting y la **lacunaridad media ($\bar{\Lambda}$)** mediante el método de deslizamiento de cajas. Ambas métricas permiten discriminar entre retinas sanas y los diferentes estadios de la retinopatía diabética (RDNP, RDP-E1, RDP-E2, RDP-E3).
 
 ---
 
@@ -41,22 +20,20 @@ Imagen RGB de fondo de ojo
         │
         ▼
   Vasos_Retina.m
-  ┌─────────────────────────────────────┐
-  │  Canal verde + CLAHE adaptativo     │
-  │  Máscara del campo visual           │
-  │  Detección y neutralización         │
-  │  de exudados                        │
-  │  Filtro de Frangi multiescala       │
-  │  Umbralización adaptativa           │
-  │  Refinamiento morfológico y         │
-  │  filtro geométrico                  │
-  └────────────────┬────────────────────┘
-                   │  imagen binaria de vasos
+  ┌───────────────────────────────────────────────┐
+  │  Canal verde + CLAHE adaptativo               │
+  │  Máscara del campo visual                     │
+  │  Detección y neutralización de exudados       │
+  │  Filtro de Frangi multiescala                 │
+  │  Umbralización adaptativa                     │
+  │  Refinamiento morfológico y filtro geométrico │
+  └────────────────┬──────────────────────────────┘
+                   │  Imagen binaria de vasos
           ┌────────┴────────┐
           ▼                 ▼
     Df_Retina.m       Lacunaridad.m
     Box-Counting      Deslizamiento
-    → D_f, SE, r      → Λ por escala
+    → Df, SE, r      → Λ por escala
                         → Λ̄ media
 ```
 

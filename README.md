@@ -130,4 +130,4 @@ Calcula la lacunaridad media $\bar{\Lambda}$ de la imagen binaria de vasos como 
 **Salidas:**
 - Tabla de $k$, $N(l)$, $Λ$ impresa en consola.
 - $\bar{\Lambda}$ media impresa en consola.
-- Figura de la curva de lacunaridad $\Lambda$ en función de $log(1/l)$.
+- Figura de la curva de lacunaridad $\Lambda$ en función de $ln(1/l)$.
